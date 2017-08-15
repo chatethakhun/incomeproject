@@ -1,0 +1,82 @@
+var express = require('express');
+var path = require('path');
+var app = express();
+var bodyParser = require('body-parser');
+var favicon = require('favicon');
+app.set('port', (process.env.PORT || 5000));
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+app.use(express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/', express.static(__dirname + '/node_modules/bootstrap/dist'));
+app.use('/', express.static(__dirname + '/node_modules/font-awesome'));
+app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'));
+app.use('/', express.static(__dirname + '/node_modules/jsgrid/dist'));
+app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
+
+
+
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
+// Connection URL
+var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income';
+// Use connect method to connect to the Server
+
+
+// views is directory for all template files
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.get('/', function(require, response) {
+  response.render('pages/index');
+});
+
+app.get('/insertform', function(require, response) {
+  response.render('pages/insert');
+});
+
+app.get('/view', function(require, response) {
+  response.render('pages/view');
+});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
+
+
+app.post('/insert',function(require, response) {
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+
+     doc = {
+        "date": require.body.date,
+        "income": require.body.income,
+        "outcome": require.body.outcome
+      };
+      db.collection("incomeDB").insert(doc, function() {
+        console.log("added 1 document");
+        response.redirect('/insertform');
+        db.close();
+      });
+  });
+});
+
+
+app.get('/find',function(require, response) {
+  response.setHeader('Content-Type', 'application/json');
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+      var cursor = db.collection("incomeDB").find();
+      var arr = [];
+      cursor.forEach(function(item) {
+        arr.push(item);
+      }, function(error) {
+        response.send({
+          value: arr
+        })
+        db.close();
+      });
+  });
+});

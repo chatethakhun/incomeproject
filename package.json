@@ -1,0 +1,29 @@
+{
+  "name": "incomeproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "bootstrap": "^4.0.0-beta",
+    "bootstrap-datepicker": "^1.7.1",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "favicon": "0.0.2",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "jquery-bootgrid": "^1.3.1",
+    "jquery-validation": "^1.17.0",
+    "jsgrid": "^1.5.3",
+    "materialize-css": "^0.100.1",
+    "mongodb": "^2.2.31",
+    "mongojs": "^2.4.1",
+    "path": "^0.12.7"
+  }
+}

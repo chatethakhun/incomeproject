@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert</title>
+</head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap-datepicker.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <style>
+    @font-face {
+      font-family: 'Athiti';
+    }
+
+    * {
+      font-family:'Athiti';
+    }
+  </style>
+  <body>
+
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">ระบบรายรับ-รายจ่าย</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item ">
+                  <a class="nav-link" href="/">หน้าแรก <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="/insertForm ">หน้ากรอกรายรับ-รายจ่าย</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/view">หน้าแสดงรายรับ-รายจ่าย</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+        <div class = "container">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <form id="insert-form" action="/insert" method="POST">
+            <div class="form-row" >
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                <label for="income">รายรับ</label>
+                <input type="number" class="form-control" id="income" name="income">
+            </div>
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                <label for="outcome">รายจ่าย</label>
+                <input type="number" class="form-control" id="outcome" name="outcome">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <label for="date">วัน/เดือน/ปี</label>
+                <input type="date" id="date" class="datepicker" name="date" style="margin-top:15px;">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top:15px;">Submit</button>
+          </form >
+        </div>
+      </div>
+    </div>
+  <script src="/jquery.min.js"></script>
+  <script src="/js/bootstrap-datepicker.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/jquery.validate.min.js"></script>
+    <script>
+      $( document ).ready(function(){
+
+<<<<<<< HEAD
+        $("#insert-form").validate({
+          rules: {
+            date: {
+              required:true,
+            },
+          }
+=======
+        $('.datepicker').pickadate({
+          selectMonths: true, // Creates a dropdown to control month
+          selectYears: 15, // Creates a dropdown of 15 years to control year,
+          today: 'Today',
+          close: 'Ok',
+          closeOnSelect: false // Close upon selecting a date,
+>>>>>>> 50bccb561da1fe331e6bce1505bc18b7880056f1
+        });
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+</head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <script src="/jquery.min.js"></script>
+  <script>
+ $(document).ready(function(){
+    $("#bg").hide();
+    setTimeout(function() {
+      fullyLoaded();
+
+    }, 1500);
+
+  function fullyLoaded() {
+      $(".loader").fadeOut("slow");
+      $("#bg").fadeIn("slow");
+  }
+ });
+</script>
+
+  <style>
+    @font-face {
+      font-family: 'Athiti';
+    }
+    body,html {
+      width:100%;
+      height:100%;
+      font-family: 'Athiti';
+
+      font-size: 67.5%
+    }
+
+    #bg {
+      background-image: url("/resource/bg.jpg");
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+
+    a {
+      color: white;
+    }
+
+    a:hover {
+      text-decoration: none;
+      color:white;
+      transition: background-color 2s;
+    }
+    @media screen and (max-width: 2000px) {
+      h1 {
+        font-size:7.5em;
+        margin-top: 50%;
+        text-align: center;
+      }
+
+    }
+    @media screen and (max-width: 1400px) {
+      h1 {
+        font-size:7.5em;
+        margin-top: 15%;
+        text-align: center;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      h1 {
+        font-size:5em;
+        margin-top: 70%;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      h1 {
+        font-size:3.5em;
+        margin-top: 70%;
+      }
+      #border {
+        width: 380px;
+        height: 200px;
+        border-color: #333333;
+      }
+    }
+  </style>
+<body>
+  <div id="bg">
+    <div class = "container">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+         <h1>ระบบรายรับ-รายจ่ายประจำวัน</h1>
+        </div>
+      </div>
+    </div>
+    <div class = "container">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+          <center><button type="button" class="btn btn-dark btn-lg"><a href="/insertForm">เริ่มต้นที่นี่</a></button></center>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

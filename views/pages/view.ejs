@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert</title>
+</head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <style>
+    @font-face {
+      font-family: 'Athiti';
+    }
+
+    * {
+      font-family:'Athiti';
+      overflow: hidden;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+    @media screen and (max-width: 800px) {
+        .container {
+          margin-top: 20px;
+        }
+    }
+  </style>
+  <script src="/jquery.min.js"></script>
+  <script>
+      $(document).ready(function(){
+          $("#jsGrid").jsGrid({
+            height: "auto",
+            width: "100%",
+            sorting: true,
+            paging: false,
+            editting: true,
+            autoload: true,
+            controller: {
+                loadData: function() {
+                    var d = $.Deferred();
+                    $.ajax({
+                        url: "/find",
+                        dataType: "json"
+                    }).done(function(response) {
+                        d.resolve(response.value);
+                    });
+                    return d.promise();
+                },
+                deleteItem: function(item) {
+                    return $.ajax({
+                        type: "DELETE",
+                        url: "/items",
+                        data: item
+                    });
+                },
+
+                  updateItem: function(item) {
+                      return $.ajax({
+                          type: "PUT",
+                          url: "/items",
+                          data: item
+                      });
+                  }
+            },
+            fields: [
+                { title: "วัน/เดือน/ปี",name: "date", type: "text" ,align: "center" },
+                { title: "รายจ่าย",name: "outcome", type: "text",align: "center" },
+                { title: "รายรับ",name: "income", type: "text", align: "center"},
+                { type: "control",
+                    editButton: false,
+                    deleteButton: false,
+                    itemTemplate: function() {
+                        return $("<button>").attr("type", "button").text("แก้ไข").on("click", function () {
+                                    console.log(date);
+                                });
+                        }},{
+                  type: "control",
+                    editButton: false,
+                    deleteButton: false,
+                    itemTemplate: function() {
+                        return $("<button>").attr("type", "button").text("ลบ").on("click", function () {
+                                    alert("Delete");
+                                });
+                        }
+                }]
+              });
+            $("#pager").on("change", function() {
+                var page = parseInt($(this).val(), 10);
+              $("#jsGrid").jsGrid("openPage", page);
+            });
+          });
+
+  </script>
+  <body>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">ระบบรายรับ-รายจ่าย</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item ">
+                  <a class="nav-link" href="/">หน้าแรก <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/insertForm ">หน้ากรอกรายรับ-รายจ่าย</a>
+                </li>
+                <li class="nav-item active" >
+                  <a class="nav-link" href="/view">หน้าแสดงรายรับ-รายจ่าย</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+  <script src="/js/materialize.min.js"></script>
+      <script>
+                        $(".button-collapse").sideNav();
+      </script>
+  </body>
+</html>
+
