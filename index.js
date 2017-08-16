@@ -14,6 +14,7 @@ app.use('/', express.static(__dirname + '/node_modules/font-awesome'));
 app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'));
 app.use('/', express.static(__dirname + '/node_modules/jquery-bootgrid/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
+app.use('/', express.static(__dirname + '/node_modules/jquery-confirm/dist'));
 
 
 
@@ -90,6 +91,16 @@ app.get('/find',function(require, response) {
           rows: arr,
           total: rownum
         });
+        db.close();
+      });
+  });
+});
+app.post('/delete/:id', function(require, response){
+  response.setHeader('Content-Type', 'application/json');
+  MongoClient.connect(url, function(err, db) {
+      var doc = ObjectId(require.params.id);
+      console.log(doc);
+      db.collection('incomeDB').deleteOne( {_id: doc} , function() {
         db.close();
       });
   });

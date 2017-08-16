@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert</title>
+<title>แสดงข้อมูลรายรับ-รายจ่าย</title>
 </head>
   <meta charset='UTF-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/jquery.bootgrid.min.css">
   <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/jquery-confirm.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
   <style>
@@ -95,6 +96,7 @@
   <script src="/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/jquery.bootgrid.min.js"></script>
+  <script src="/jquery-confirm.min.js"></script>
 
       <script>
       $( document ).ready(function(){
@@ -128,9 +130,9 @@
     /* Executes after data is loaded and rendered */
     grid.find(".command-edit").on("click", function(e) {
       var id = $(this).data("row-id");
+      alert(id);
 
-
-             $.ajax({
+             /*$.ajax({
                 type : "GET",
                 url: "/update/" + id,
                 success: function() {
@@ -140,7 +142,7 @@
                   alert('text status' + textstatus + ', err ' + errorThrown);
                 }
              });
-
+*/
 
     }).end().find(".command-delete").on("click", function(e) {
       var id = $(this).data("row-id");
