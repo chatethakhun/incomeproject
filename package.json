@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "bootstrap": "^4.0.0-beta",
+    "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.7.1",
     "ejs": "^2.5.7",
     "express": "^4.15.4",

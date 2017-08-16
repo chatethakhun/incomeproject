@@ -6,6 +6,7 @@
   <meta charset='UTF-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/jquery.bootgrid.min.css">
   <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
@@ -18,107 +19,103 @@
       font-family:'Athiti';
       overflow: hidden;
     }
-
-    .container {
-      margin-top: 50px;
+    body,html {
+      height: 100%;
     }
-    @media screen and (max-width: 800px) {
-        .container {
-          margin-top: 20px;
-        }
+    label {
+      margin-top: 15px;
+    }
+    #date-error{
+      color: red;
+    }
+    #background {
+      background: rgba(147,206,222,1);
+      background: linear-gradient(to bottom, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+      background-size: cover;
+      height: 100%;
+    }
+    #border {
+      background-color: white;
+      box-shadow: 2px 2px 20px #999999;
+      border-radius: 10px;
+    }
+    .navbar-default {
+      background-color: #333;
+      border-color: #333;
+      color: #f5f5f5;
+    }
+    .navbar-default .navbar-nav>li>a {
+      color: #f5f5f5;
     }
   </style>
   <script src="/jquery.min.js"></script>
   <script>
-      $(document).ready(function(){
-          $("#jsGrid").jsGrid({
-            height: "auto",
-            width: "100%",
-            sorting: true,
-            paging: false,
-            editting: true,
-            autoload: true,
-            controller: {
-                loadData: function() {
-                    var d = $.Deferred();
-                    $.ajax({
-                        url: "/find",
-                        dataType: "json"
-                    }).done(function(response) {
-                        d.resolve(response.value);
-                    });
-                    return d.promise();
-                },
-                deleteItem: function(item) {
-                    return $.ajax({
-                        type: "DELETE",
-                        url: "/items",
-                        data: item
-                    });
-                },
-
-                  updateItem: function(item) {
-                      return $.ajax({
-                          type: "PUT",
-                          url: "/items",
-                          data: item
-                      });
-                  }
-            },
-            fields: [
-                { title: "วัน/เดือน/ปี",name: "date", type: "text" ,align: "center" },
-                { title: "รายจ่าย",name: "outcome", type: "text",align: "center" },
-                { title: "รายรับ",name: "income", type: "text", align: "center"},
-                { type: "control",
-                    editButton: false,
-                    deleteButton: false,
-                    itemTemplate: function() {
-                        return $("<button>").attr("type", "button").text("แก้ไข").on("click", function () {
-                                    console.log(date);
-                                });
-                        }},{
-                  type: "control",
-                    editButton: false,
-                    deleteButton: false,
-                    itemTemplate: function() {
-                        return $("<button>").attr("type", "button").text("ลบ").on("click", function () {
-                                    alert("Delete");
-                                });
-                        }
-                }]
-              });
-            $("#pager").on("change", function() {
-                var page = parseInt($(this).val(), 10);
-              $("#jsGrid").jsGrid("openPage", page);
-            });
-          });
 
   </script>
   <body>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">ระบบรายรับ-รายจ่าย</a>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item ">
-                  <a class="nav-link" href="/">หน้าแรก <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/insertForm ">หน้ากรอกรายรับ-รายจ่าย</a>
-                </li>
-                <li class="nav-item active" >
-                  <a class="nav-link" href="/view">หน้าแสดงรายรับ-รายจ่าย</a>
-                </li>
-              </ul>
-            </div>
-          </nav>
+    <nav class="navbar navbar-default">
+<div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"  style="color: #f5f5f5;">รายรับ-รายจ่าย</a>
+  </div>
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+      <li ><a href="/insertForm">หน้ากรอกช้อมูลรายรับ-รายจ่าย <span class="sr-only">(current)</span></a></li>
+      <li class="active"><a href="/view">หน้าแสดงรายรับ-รายจ่าย</a></li>
+    </ul>
+  </div>
+</div>
+</nav>
 
-  <script src="/js/materialize.min.js"></script>
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="grid-data"  class="table table-condensed table-hover table-striped" data-url="/find">
+        				    <thead>
+        				        <tr>
+        				            <th data-formatter="date">วัน/เดือน/ปี</th>
+        				            <th data-formatter="incomedetail">ประเภทรายรับ</th>
+        				            <th data-column-id="income">รายรับ</th>
+        				            <th data-column-id="outcomedetail">ประเภทรายจ่าย</th>
+                            <th data-column-id="outcome">รายจ่าย</th>
+        				            <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
+        				        </tr>
+        				    </thead>
+        				</table>
+              </div>
+            </div>
+          </div>
+  <script src="/jquery.min.js"></script>
+  <script src="/jquery.bootgrid.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
       <script>
-                        $(".button-collapse").sideNav();
+      $( document ).ready(function(){
+        initGrid();
+      });
+      function initGrid() {
+
+     var grid = $("#grid-data").bootgrid({
+
+         ajaxSettings: {
+           method: "GET",
+           type: "json",
+
+         },
+         rowCount: [5,10,15],
+         ajax: true,
+         url: "/find"
+       });
+
+
+
+      }
       </script>
   </body>
 </html>
-

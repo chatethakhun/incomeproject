@@ -12,7 +12,7 @@ app.use('/', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use('/', express.static(__dirname + '/node_modules/font-awesome'));
 app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'));
-app.use('/', express.static(__dirname + '/node_modules/jsgrid/dist'));
+app.use('/', express.static(__dirname + '/node_modules/jquery-bootgrid/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
 
 
@@ -53,7 +53,9 @@ app.post('/insert',function(require, response) {
      doc = {
         "date": require.body.date,
         "income": require.body.income,
-        "outcome": require.body.outcome
+        "outcome": require.body.outcome,
+        "incomedetail": require.body.incomedetail,
+        "outcomedetail": require.body.outcomedetail
       };
       db.collection("incomeDB").insert(doc, function() {
         console.log("added 1 document");
