@@ -78,11 +78,11 @@ app.get('/find',function(require, response) {
         rownum = count;
       });
       var arr = [];
-      console.log(require.query);
-      cursor.skip(1).limit(5); // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
+      var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));
+      cursor.skip(offset).limit(parseInt(require.query.rowCount)); // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
       cursor.forEach(function(item) {
         arr.push(item);
-        console.log(item);
+        //console.log(item);
       }, function(error) {
         response.send({
           current: parseInt(require.query.current),
