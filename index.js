@@ -49,17 +49,18 @@ app.listen(app.get('port'), function() {
 app.post('/insert',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-
      doc = {
+       "_id": require.body._id,
         "date": require.body.date,
         "income": require.body.income,
         "outcome": require.body.outcome,
         "incomedetail": require.body.incomedetail,
         "outcomedetail": require.body.outcomedetail
       };
+      console.log(doc);
       db.collection("incomeDB").insert(doc, function() {
         console.log("added 1 document");
-        response.redirect('/insertform');
+        response.redirect('/view');
         db.close();
       });
   });
@@ -70,14 +71,25 @@ app.get('/find',function(require, response) {
   response.setHeader('Content-Type', 'application/json');
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-      var cursor = db.collection("incomeDB").find();
+      var cursor = db.collection("incomeDB").find({});
+      var rownum = 0;
+      var countvalue = cursor;
+      countvalue.count().then((count) => {
+        rownum = count;
+      });
       var arr = [];
+      console.log(require.query);
+      cursor.skip(1).limit(5); // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
       cursor.forEach(function(item) {
         arr.push(item);
+        console.log(item);
       }, function(error) {
         response.send({
-          value: arr
-        })
+          current: parseInt(require.query.current),
+          rowCount: parseInt(require.query.rowCount),
+          rows: arr,
+          total: rownum
+        });
         db.close();
       });
   });
