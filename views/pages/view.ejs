@@ -17,7 +17,7 @@
 
     * {
       font-family:'Athiti';
-      overflow: hidden;
+
     }
     body,html {
       height: 100%;
@@ -77,7 +77,7 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12">
-                <table id="grid-data"  class="table table-condensed table-hover table-striped" data-url="/find">
+                <table id="grid-data"  class="table table-condensed table-hover table-striped" data-ajax="true" data-url="/find">
         				    <thead>
         				        <tr>
         				            <th data-column-id="date">วัน/เดือน/ปี</th>
@@ -93,8 +93,9 @@
             </div>
           </div>
   <script src="/jquery.min.js"></script>
-  <script src="/jquery.bootgrid.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/jquery.bootgrid.min.js"></script>
+
       <script>
       $( document ).ready(function(){
         initGrid();
@@ -110,8 +111,63 @@
          },
          rowCount: [5,10,15],
          ajax: true,
-         url: "/find"
-       });
+         url: "/find",
+          formatters: {
+            "commands": function(column, row) {
+                return "<button type=\"submit\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row._id + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                "<button type=\"submit\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row._id +"\"><span class=\"fa fa-trash-o\"></span></button>";
+      },
+      "name": function(column,row) {
+         return row.name;
+      },
+      "number-id" : function(column,row) {
+          return row._id;
+      }
+    }
+  }).on("loaded.rs.jquery.bootgrid", function() {
+    /* Executes after data is loaded and rendered */
+    grid.find(".command-edit").on("click", function(e) {
+      var id = $(this).data("row-id");
+
+
+             $.ajax({
+                type : "GET",
+                url: "/update/" + id,
+                success: function() {
+                  window.location.href = "/update/" + id;
+                },
+                error: function() {
+                  alert('text status' + textstatus + ', err ' + errorThrown);
+                }
+             });
+
+
+    }).end().find(".command-delete").on("click", function(e) {
+      var id = $(this).data("row-id");
+      console.log(id);
+      //var obj = new ObjectID(retName);
+      $.confirm({
+        title: 'Confirm!',
+        content: 'Are you Sure!',
+        buttons: {
+          confirm: function() {
+            $.ajax({
+              type: "POST",
+              url: "/delete/" + id,
+
+            });
+            $("#grid-data").bootgrid("reload");
+
+          },
+          cancel: function() {
+          }
+        }
+      });
+
+
+    });
+  })
+
 
 
 
