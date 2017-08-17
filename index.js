@@ -7,6 +7,9 @@ app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+var session = require('express-session');
+
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 app.use('/', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap/dist'));
@@ -15,7 +18,9 @@ app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'))
 app.use('/', express.static(__dirname + '/node_modules/jquery-bootgrid/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
 app.use('/', express.static(__dirname + '/node_modules/jquery-confirm/dist'));
-
+app.use(session({
+  secret: 'rreteyurtettyietfga345664363'
+}))
 
 
 var MongoClient = require('mongodb').MongoClient
@@ -30,23 +35,59 @@ var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income';
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+app.get('/login', function(require, response) {
+  console.log(session);
+  response.render('pages/login');
+
+});
+
 app.get('/', function(require, response) {
   response.render('pages/index');
 });
 
 app.get('/insertform', function(require, response) {
-  response.render('pages/insert');
+
+  if(session.id) {
+    response.render('pages/insert');
+  }else {
+    response.render('pages/login');
+  }
 });
 
 app.get('/view', function(require, response) {
   response.render('pages/view');
 });
-
+app.get('/logout',function (require,response) {
+  //delete session.id;
+  //session.destroy;
+  require.session = null;
+  //console.log(require.session.destroy());
+  response.redirect('/login');
+})
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
+app.post('/auth',function(require, response){
 
+  if(require.body.username == 'admin' && require.body.password == 'admin') {
+    session.id  = require.body.username;
+    session.password = require.body.password;
+  }else {
+    console.log("Who!");
+  }
+  response.redirect('/redirect');
+});
+
+app.get('/redirect', function (require, response) {
+    console.log("Who!");
+  console.log(session);
+  if(session.id) {
+    response.redirect('/insertForm');
+  }else {
+    response.redirect('/login');
+  }
+})
 app.post('/insert',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
