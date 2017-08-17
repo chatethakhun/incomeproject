@@ -72,6 +72,8 @@ app.get('/find',function(require, response) {
   response.setHeader('Content-Type', 'application/json');
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
+    if (require.query.searchPhrase == '') {
+      console.log("Search Not Active");
       var cursor = db.collection("incomeDB").find({});
       var rownum = 0;
       var countvalue = cursor;
@@ -79,12 +81,18 @@ app.get('/find',function(require, response) {
         rownum = count;
       });
       var arr = [];
-      var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));
-      cursor.skip(offset).limit(parseInt(require.query.rowCount)); // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
-      cursor.forEach(function(item) {
+      //console.log(require.query.searchPhrase);
+      var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
+      cursor.skip(offset).limit(parseInt(require.query.rowCount));
+       // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
+       var search = db.collection("incomeDB").find({ date :require.query.searchPhrase });
+       //console.log(cursor.readConcern());
+
+       cursor.forEach(function(item) {
         arr.push(item);
         //console.log(item);
       }, function(error) {
+
         response.send({
           current: parseInt(require.query.current),
           rowCount: parseInt(require.query.rowCount),
@@ -93,6 +101,36 @@ app.get('/find',function(require, response) {
         });
         db.close();
       });
+    } else {
+      console.log("Search Active");
+      var cursor = db.collection("incomeDB").find({ incomedetail :require.query.searchPhrase });
+      var rownum = 0;
+      var countvalue = cursor;
+      countvalue.count().then((count) => {
+        rownum = count;
+      });
+      var arr = [];
+      //console.log(require.query.searchPhrase);
+      var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
+      cursor.skip(offset).limit(parseInt(require.query.rowCount));
+       // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
+       //console.log(cursor.readConcern());
+
+       cursor.forEach(function(item) {
+        arr.push(item);
+        //console.log(item);
+      }, function(error) {
+
+        response.send({
+          current: parseInt(require.query.current),
+          rowCount: parseInt(require.query.rowCount),
+          rows: arr,
+          total: rownum
+        });
+        db.close();
+      });
+    }
+
   });
 });
 app.post('/delete/:id', function(require, response){
