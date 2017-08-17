@@ -36,9 +36,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/login', function(require, response) {
-  console.log(session);
   if(session.id) {
-    response.render('pages/insert');
+    response.redirect('/insertForm');
   }else {
     response.render('pages/login');
   }
@@ -47,34 +46,16 @@ app.get('/login', function(require, response) {
 });
 
 app.post('/auth',function(require, response){
-  var username = require.body.username;
 MongoClient.connect(url, function(err, db) {
-  var cursor = db.collection("user").find({});
-
+  var cursor = db.collection("user").find();
   cursor.forEach(function(item) {
-
-   console.log(username);
-   console.log(item._id);
-   if(item.username == username){
-     session.username  = require.body.username;
-     session.password = require.body.password;
+   if(item.username == require.body.username){
      session.id = item._id;
      response.redirect('/insertForm');
    }else {
      response.end('Wrong Password');
    }
-
-   //console.log(item);
-
-
-
 });
-  /*if(require.body.username == 'admin' && require.body.password == 'admin') {
-
-  }else {
-    response.end('Wrong Password');
-  }*/
-
 });
 });
 app.get('/', function(require, response) {
@@ -95,7 +76,7 @@ app.get('/view', function(require, response) {
     if(session.id) {
       response.render('pages/view');
     }else {
-      response.render('pages/login');
+      response.redirect('/login');
     }
 
 });
@@ -142,14 +123,19 @@ app.get('/find',function(require, response) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
       console.log();
-      var cursor = db.collection("incomeDB").find( {"username": "admin" } );
+      var cursor = db.collection("incomeDB").aggregate( { "$lookup": {
+        "localField": "income_id",
+        "from": "incomeDB",
+        "foreignField": "_id",
+        "as": "userinfo"
+      } } );
                 // { incomedb: { $elemMatch: { income: 'eat' } } } );
 
       var rownum = 0;
       var countvalue = cursor;
-      countvalue.count().then((count) => {
-        rownum = count;
-      });
+      //countvalue.count().then((count) => {
+      //  rownum = count;
+      //});
       var arr = [];
       //console.log(require.query.searchPhrase);
       var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
