@@ -103,7 +103,7 @@ app.get('/find',function(require, response) {
       });
     } else {
       console.log("Search Active");
-      var cursor = db.collection("incomeDB").find({ incomedetail :require.query.searchPhrase });
+      var cursor = db.collection("incomeDB").find({ incomedetail : {$regex: require.query.searchPhrase}});
       var rownum = 0;
       var countvalue = cursor;
       countvalue.count().then((count) => {

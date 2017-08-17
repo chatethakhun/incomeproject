@@ -82,11 +82,11 @@
                 <table id="grid-data"  class="table table-condensed table-hover table-striped" data-ajax="true" data-url="/find">
         				    <thead>
         				        <tr>
-        				            <th data-column-id="date">วัน/เดือน/ปี</th>
+        				            <th data-formatter="date" data-column-id="date">วัน/เดือน/ปี</th>
         				            <th data-column-id="incomedetail">ประเภทรายรับ</th>
-        				            <th data-column-id="income">รายรับ</th>
+        				            <th data-formatter="income" data-column-id="income">รายรับ</th>
         				            <th data-column-id="outcomedetail">ประเภทรายจ่าย</th>
-                            <th data-column-id="outcome">รายจ่าย</th>
+                            <th data-formatter="outcome" data-column-id="outcome">รายจ่าย</th>
         				            <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
         				        </tr>
         				    </thead>
@@ -125,11 +125,25 @@
                 return "<button type=\"submit\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row._id + "\"><span class=\"fa fa-pencil\"></span></button> " +
                 "<button type=\"submit\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row._id +"\"><span class=\"fa fa-trash-o\"></span></button>";
       },
-      "name": function(column,row) {
-         return row.name;
+      "income": function(column,row) {
+         if(row.income == '') {
+          return "ไม่มี";
+        }else {
+          return row.income + " บาท";
+        }
       },
-      "number-id" : function(column,row) {
-          return row._id;
+      "outcome": function(column,row) {
+        if(row.outcome == '') {
+         return "ไม่มี";
+       }else {
+         return row.outcome + " บาท";
+       }
+      },
+      "date" : function(column,row) {
+          var month = row.date.split('-')[1];
+          var day = row.date.split('-')[2];
+          var year = row.date.split('-')[0];
+          return day + "/" + month + "/" + year;
       }
     }
   }).on("loaded.rs.jquery.bootgrid", function() {
