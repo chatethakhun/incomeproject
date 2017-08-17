@@ -37,10 +37,46 @@ app.set('view engine', 'ejs');
 
 app.get('/login', function(require, response) {
   console.log(session);
-  response.render('pages/login');
+  if(session.id) {
+    response.render('pages/insert');
+  }else {
+    response.render('pages/login');
+  }
+
 
 });
 
+app.post('/auth',function(require, response){
+  var username = require.body.username;
+MongoClient.connect(url, function(err, db) {
+  var cursor = db.collection("user").find({});
+
+  cursor.forEach(function(item) {
+
+   console.log(username);
+   console.log(item._id);
+   if(item.username == username){
+     session.username  = require.body.username;
+     session.password = require.body.password;
+     session.id = item._id;
+     response.redirect('/insertForm');
+   }else {
+     response.end('Wrong Password');
+   }
+
+   //console.log(item);
+
+
+
+});
+  /*if(require.body.username == 'admin' && require.body.password == 'admin') {
+
+  }else {
+    response.end('Wrong Password');
+  }*/
+
+});
+});
 app.get('/', function(require, response) {
   response.render('pages/index');
 });
@@ -55,12 +91,18 @@ app.get('/insertform', function(require, response) {
 });
 
 app.get('/view', function(require, response) {
-  response.render('pages/view');
+
+    if(session.id) {
+      response.render('pages/view');
+    }else {
+      response.render('pages/login');
+    }
+
 });
 app.get('/logout',function (require,response) {
-  //delete session.id;
+  delete session.id;
   //session.destroy;
-  require.session = null;
+  //require.session = null;
   //console.log(require.session.destroy());
   response.redirect('/login');
 })
@@ -68,31 +110,16 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.post('/auth',function(require, response){
 
-  if(require.body.username == 'admin' && require.body.password == 'admin') {
-    session.id  = require.body.username;
-    session.password = require.body.password;
-  }else {
-    console.log("Who!");
-  }
-  response.redirect('/redirect');
-});
 
-app.get('/redirect', function (require, response) {
-    console.log("Who!");
-  console.log(session);
-  if(session.id) {
-    response.redirect('/insertForm');
-  }else {
-    response.redirect('/login');
-  }
-})
+
 app.post('/insert',function(require, response) {
   MongoClient.connect(url, function(err, db) {
+    //console.log(db.collection("user").find()[1]._id);
     assert.equal(null, err);
+
      doc = {
-       "_id": require.body._id,
+       "income_id": ObjectId(session.id),
         "date": require.body.date,
         "income": require.body.income,
         "outcome": require.body.outcome,
@@ -114,8 +141,10 @@ app.get('/find',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
-      console.log("Search Not Active");
-      var cursor = db.collection("incomeDB").find({});
+      console.log();
+      var cursor = db.collection("incomeDB").find( {"username": "admin" } );
+                // { incomedb: { $elemMatch: { income: 'eat' } } } );
+
       var rownum = 0;
       var countvalue = cursor;
       countvalue.count().then((count) => {
@@ -126,11 +155,11 @@ app.get('/find',function(require, response) {
       var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
       cursor.skip(offset).limit(parseInt(require.query.rowCount));
        // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
-       var search = db.collection("incomeDB").find({ date :require.query.searchPhrase });
        //console.log(cursor.readConcern());
 
        cursor.forEach(function(item) {
         arr.push(item);
+        console.log(arr);
         //console.log(item);
       }, function(error) {
 

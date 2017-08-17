@@ -48,6 +48,11 @@
     .navbar-default .navbar-nav>li>a {
       color: #f5f5f5;
     }
+    .btn-logout {
+      width: 100%;
+      padding: 3px 20px !important;
+      text-align: left !important;
+    }
   </style>
   <script src="/jquery.min.js"></script>
   <script>
@@ -71,6 +76,11 @@
       <li><a href="/">หน้าแรก</a></li>
       <li ><a href="/insertForm">หน้ากรอกช้อมูลรายรับ-รายจ่าย <span class="sr-only">(current)</span></a></li>
       <li class="active"><a href="/view">หน้าแสดงรายรับ-รายจ่าย</a></li>
+      <li class="active">
+        <form>
+        <button type="submit" class="btn btn-link btn-logout">Logout</button>
+        </form>
+      </li>
     </ul>
   </div>
 </div>
@@ -83,9 +93,9 @@
         				    <thead>
         				        <tr>
         				            <th data-formatter="date" data-column-id="date">วัน/เดือน/ปี</th>
-        				            <th data-column-id="incomedetail">ประเภทรายรับ</th>
+        				            <th data-formatter="incomedetail" data-column-id="incomedetail">ประเภทรายรับ</th>
         				            <th data-formatter="income" data-column-id="income">รายรับ</th>
-        				            <th data-column-id="outcomedetail">ประเภทรายจ่าย</th>
+        				            <th data-formatter="outcomedetail"data-column-id="outcomedetail">ประเภทรายจ่าย</th>
                             <th data-formatter="outcome" data-column-id="outcome">รายจ่าย</th>
         				            <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
         				        </tr>
@@ -136,7 +146,7 @@
         if(row.outcome == '') {
          return "ไม่มี";
        }else {
-         return row.outcome + " บาท";
+         return row._id + " บาท";
        }
       },
       "date" : function(column,row) {
@@ -144,8 +154,21 @@
           var day = row.date.split('-')[2];
           var year = row.date.split('-')[0];
           return day + "/" + month + "/" + year;
-      }
+      },
+      "incomedetail": function(column,row) {
+        if(row.incomedetail == '') {
+         return "ไม่มี";
+       }else {
+         return row.incomedetail;
+       }
+     },"outcomedetail": function(column,row) {
+             if(row.outcomedetail == '') {
+              return "ไม่มี";
+            }else {
+              return row.outcomedetail;
+            }
     }
+  }
   }).on("loaded.rs.jquery.bootgrid", function() {
     /* Executes after data is loaded and rendered */
     grid.find(".command-edit").on("click", function(e) {
