@@ -15,7 +15,7 @@
     setTimeout(function() {
       fullyLoaded();
 
-    }, 1500);
+    },500);
 
   function fullyLoaded() {
       $(".loader").fadeOut("slow");
@@ -53,7 +53,12 @@
     a:hover {
       text-decoration: none;
       color:white;
-      transition: background-color 2s;
+    }
+
+     .btn-primary:hover {
+      text-decoration: none;
+      color:white;
+      transition: background-color 0.5s;
     }
     @media screen and (max-width: 2000px) {
       h1 {
@@ -102,7 +107,7 @@
     <div class = "container">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12">
-          <center><button type="button" class="btn btn-dark btn-lg"><a href="/login">เริ่มต้นที่นี่</a></button></center>
+          <center><button type="button" class="btn btn-primary btn-lg" aria-haspopup="true" aria-expanded="false"><a href="/login">เริ่มต้นที่นี่</a></center>
         </div>
       </div>
     </div>
