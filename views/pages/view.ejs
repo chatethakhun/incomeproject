@@ -136,10 +136,39 @@
                 "<button type=\"submit\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row._id +"\"><span class=\"fa fa-trash-o\"></span></button>";
       },
       "income": function(column,row) {
-        //console.log(row.userinfo.in);
-        return row.income;
-      }
 
+         if(row.income == '') {
+          return "ไม่มี";
+        }else {
+          return row.income + " บาท";
+        }
+      },
+      "outcome": function(column,row) {
+        if(row.outcome == '') {
+         return "ไม่มี";
+       }else {
+         return row.outcome + " บาท";
+       }
+      },
+      "date" : function(column,row) {
+          var month = row.date.split('-')[1];
+          var day = row.date.split('-')[2];
+          var year = row.date.split('-')[0];
+          return day + "/" + month + "/" + year;
+      },
+      "incomedetail": function(column,row) {
+        if(row.incomedetail == '') {
+         return "ไม่มี";
+       }else {
+         return row.incomedetail;
+       }
+     },"outcomedetail": function(column,row) {
+             if(row.outcomedetail == '') {
+              return "ไม่มี";
+            }else {
+              return row.outcomedetail;
+            }
+    }
   }
   }).on("loaded.rs.jquery.bootgrid", function() {
     /* Executes after data is loaded and rendered */

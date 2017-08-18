@@ -42,7 +42,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/login', function(require, response) {
-  if(session.id) {
+  if(session.auth == "Who!!!!!!!") {
     response.render('pages/insert');
   }else {
     response.render('pages/login');
@@ -60,9 +60,10 @@ MongoClient.connect(url, function(err, db) {
 
      console.log("Access");
      session.id = item._id;
+     session.auth = "Who!!!!!!!";
      response.render('pages/insert');
    }else {
-     //response.render('pages/login');
+        response.redirect('/login');
    }
     });
   db.close();
@@ -74,7 +75,7 @@ app.get('/', function(require, response) {
 
 app.get('/insertform', function(require, response) {
 
-  if(session.id) {
+  if(session.auth == "Who!!!!!!!") {
     response.render('pages/insert');
   }else {
     response.render('pages/login');
@@ -83,7 +84,7 @@ app.get('/insertform', function(require, response) {
 
 app.get('/view', function(require, response) {
 
-    if(session.id) {
+    if(session.auth == "Who!!!!!!!") {
       response.render('pages/view');
     }else {
       response.redirect('/login');
@@ -91,7 +92,7 @@ app.get('/view', function(require, response) {
 
 });
 app.get('/logout',function (require,response) {
-  delete session.id;
+  delete session.auth == "Who!!!!!!!";
   //session.destroy;
   //require.session = null;
   //console.log(require.session.destroy());
