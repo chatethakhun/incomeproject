@@ -27,8 +27,14 @@ var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 // Connection URL
-var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income';
+var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/incomess';
 // Use connect method to connect to the Server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  db.close();
+});
 
 
 // views is directory for all template files
@@ -37,7 +43,7 @@ app.set('view engine', 'ejs');
 
 app.get('/login', function(require, response) {
   if(session.id) {
-    response.redirect('/insertForm');
+    response.render('pages/insert');
   }else {
     response.render('pages/login');
   }
@@ -51,7 +57,7 @@ MongoClient.connect(url, function(err, db) {
   cursor.forEach(function(item) {
    if(item.username == require.body.username){
      session.id = item._id;
-     response.redirect('/insertForm');
+     response.render('pages/insert');
    }else {
      response.end('Wrong Password');
    }
