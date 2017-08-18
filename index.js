@@ -53,13 +53,17 @@ app.get('/login', function(require, response) {
 
 app.post('/auth',function(require, response){
 MongoClient.connect(url, function(err, db) {
-  var cursor = db.collection("user").find();
+  var cursor = db.collection("user").find({username : require.body.username, password : require.body.password});
   cursor.forEach(function(item) {
-   if(item.username == require.body.username){
+      console.log(item.username);
+   if(item.username == require.body.username && item.password == require.body.password ){
+
      console.log("Access");
      session.id = item._id;
      response.render('pages/insert');
-    }
+   }else {
+     //response.render('pages/login');
+   }
     });
   db.close();
 });
@@ -128,35 +132,46 @@ app.get('/find',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
-      console.log();
-      var cursor= db.collection("incomeDB").aggregate( {
-        "$lookup": {
-                "localField": "income_id",
-                "from": "user",
-                "foreignField": "_id",
-                "as": "userinfo"
-              },
-            } );
+      //console.log();
+      var cursor= db.collection("user").aggregate( [
+        {$lookup: {localField: "_id",from: "incomeDB", foreignField: "income_id",as: "userinfo"}}]);
            // { incomedb: { $elemMatch: { income: 'eat' } } } );
-      console.log(userinfo);
-      var rownum = 0;
+      //console.log(userinfo);
+
       var countvalue = cursor;
       //countvalue.count().then((count) => {
       //  rownum = count;
       //});
+
       var arr = [];
       //console.log(require.query.searchPhrase);
       var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
       cursor.skip(offset).limit(parseInt(require.query.rowCount));
        // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
        //console.log(cursor.readConcern());
-
+       var name = [];
+       var rownum = 0;
        cursor.forEach(function(item) {
-        arr.push(item);
-        //console.log(arr);
-        console.log(item);
-      }, function(error) {
+         //console.log(item.username);
+         name.push(item.username);
 
+         item.userinfo.forEach(function(select) {
+           //console.log(typeof select.income_id);
+           //console.log(typeof session.id);
+           //console.log(name);
+           if (session.id.toString() == select.income_id) {
+
+             rownum += 1;
+             //console.log("Match");
+
+             arr.push(select);
+           }
+         })
+
+        //console.log(arr);
+        //console.log(item);
+      }, function(error) {
+        console.log(rownum);
         response.send({
           current: parseInt(require.query.current),
           rowCount: parseInt(require.query.rowCount),
