@@ -9,20 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
   <script src="/jquery.min.js"></script>
-  <script>
- $(document).ready(function(){
-    $("#bg").hide();
-    setTimeout(function() {
-      fullyLoaded();
 
-    },500);
-
-  function fullyLoaded() {
-      $(".loader").fadeOut("slow");
-      $("#bg").fadeIn("slow");
-  }
- });
-</script>
 
   <style>
     @font-face {
@@ -54,12 +41,16 @@
       text-decoration: none;
       color:white;
     }
+    button {
+      background-image: url(/resource/button.png);
+      background-size:cover;
+        width: 200px;
+        height: 40px;
+      border-radius: 10px;
+      border: none;
 
-     .btn-primary:hover {
-      text-decoration: none;
-      color:white;
-      transition: background-color 0.5s;
     }
+
     @media screen and (max-width: 2000px) {
       h1 {
         font-size:7.5em;
@@ -106,14 +97,19 @@
     </div>
     <div class = "container">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-          <center><button type="button" class="btn btn-primary btn-lg" aria-haspopup="true" aria-expanded="false"><a href="/login">เริ่มต้นที่นี่</a></center>
+      <div class="col-sm-12 col-md-12 col-lg-12" style="padding-top: 20px;">
+        <center><button type="button" style= " color:white; font-size: 2.5em;">เริ่มต้นที่นี่</button></center>
         </div>
       </div>
     </div>
   </div>
 
-
+<script src="/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+    <script>
+      $('button').click(function() {
+        window.location.href = "/login";
+      });
+    </script>
 </body>
 </html>
