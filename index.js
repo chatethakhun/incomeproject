@@ -27,7 +27,7 @@ var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 // Connection URL
-var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/incomess';
+var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
@@ -56,12 +56,12 @@ MongoClient.connect(url, function(err, db) {
   var cursor = db.collection("user").find();
   cursor.forEach(function(item) {
    if(item.username == require.body.username){
+     console.log("Access");
      session.id = item._id;
      response.render('pages/insert');
-   }else {
-     response.end('Wrong Password');
-   }
-});
+    }
+    });
+  db.close();
 });
 });
 app.get('/', function(require, response) {
@@ -129,14 +129,16 @@ app.get('/find',function(require, response) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
       console.log();
-      var cursor = db.collection("incomeDB").aggregate( { "$lookup": {
-        "localField": "income_id",
-        "from": "incomeDB",
-        "foreignField": "_id",
-        "as": "userinfo"
-      } } );
-                // { incomedb: { $elemMatch: { income: 'eat' } } } );
-
+      var cursor= db.collection("incomeDB").aggregate( {
+        "$lookup": {
+                "localField": "income_id",
+                "from": "user",
+                "foreignField": "_id",
+                "as": "userinfo"
+              },
+            } );
+           // { incomedb: { $elemMatch: { income: 'eat' } } } );
+      console.log(userinfo);
       var rownum = 0;
       var countvalue = cursor;
       //countvalue.count().then((count) => {
@@ -151,8 +153,8 @@ app.get('/find',function(require, response) {
 
        cursor.forEach(function(item) {
         arr.push(item);
-        console.log(arr);
-        //console.log(item);
+        //console.log(arr);
+        console.log(item);
       }, function(error) {
 
         response.send({
