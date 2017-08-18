@@ -48,11 +48,7 @@ app.listen(app.get('port'), function() {
 
 app.get('/', function(require, response) {
 
-    if(session.auth == "Who!!!!!!!") {
-      response.redirect('/insertForm');
-    }else {
       response.render('pages/index');
-    }
 
 });
 
