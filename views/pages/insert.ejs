@@ -131,17 +131,11 @@
         $("#insert-form").validate({
           rules: {
             date: {
-              required:true,
+              required:true
             }
           }
-      })
-
-      $(".btn btn-default").click(function(event) {
-          $.ajax(
-            url: "/logout",
-            method : "POST"
-          )
       });
+
     });
     </script>
   </body>
