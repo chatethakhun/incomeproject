@@ -67,6 +67,7 @@
       </table>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6">
+      <h2 style="padding-top: 20px; text-align: center;color:#0072bc">เพิ่ม User</h2>
       <form id="insert-form" action="/insertUser" method="POST">
         <div class="form-group">
             <label for="username">Username:</label>
@@ -86,13 +87,13 @@
 <script src="/jquery-confirm.min.js"></script>
 
       <script>
-      $( document ).ready(function(){
+      $(document).ready(function(){
         initGrid();
 
       });
       function initGrid() {
 
-     var grid = $("#grid-data").bootgrid({
+        var grid = $("#grid-data").bootgrid({
 
          ajaxSettings: {
            method: "GET",
@@ -145,6 +146,12 @@
         content: 'Are you Sure!',
         buttons: {
           confirm: function() {
+            $.ajax({
+              type: "POST",
+              url: "/deleteUser/" + id,
+
+            });
+            $("#grid-data").bootgrid("reload");
 
           },
           cancel: function() {
@@ -157,7 +164,18 @@
   })
 
 
+
       }
+      $("#insert-form").validate({
+          rules: {
+            username: {
+              required:true,
+            },
+            password: {
+              required:true,
+            }
+          }
+      });
       </script>
 </body>
 </html>

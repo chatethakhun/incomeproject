@@ -53,11 +53,11 @@ app.get('/', function(require, response) {
 });
 
 app.get('/admin', function(require, response) {
-  response.render('pages/admin');
-//  if(session.auth == "Who!!!!!!!") {
-//  }else {
-//    response.redirect('/login');
-//  }
+  if(session.auth == "Who!!!!!!!") {
+    response.render('pages/admin');
+  }else {
+    response.redirect('/login');
+  }
 
 });
 
@@ -299,5 +299,14 @@ app.post('/delete/:id', function(require, response){
       var doc = ObjectId(require.params.id);
         db.collection('incomeDB').deleteOne( {_id: doc});
            qdb.close();
+  });
+});
+
+app.post('/deleteUser/:id', function(require, response){
+  response.setHeader('Content-Type', 'application/json');
+  MongoClient.connect(url, function(err, db) {
+      var doc = ObjectId(require.params.id);
+        db.collection('user').deleteOne( {_id: doc});
+           db.close();
   });
 });
