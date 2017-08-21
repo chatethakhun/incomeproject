@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>หน้า Admin</title>
+</head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/jquery.bootgrid.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/jquery-confirm.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <script src="/jquery.min.js"></script>
+
+
+  <style>
+    @font-face {
+      font-family: 'Athiti';
+    }
+    body,html {
+      width:100%;
+      height:100%;
+      font-family: 'Athiti';
+      font-size: 67.5%
+    }
+  </style>
+<body>
+  <nav class="navbar navbar-default">
+<div class="container-fluid">
+<!-- Brand and toggle get grouped for better mobile display -->
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand" href="#"  style="color: #f5f5f5;">รายรับ-รายจ่าย</a>
+</div>
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav navbar-right">
+    <li class="active"><a href="/view">รายชื่อ User</a></li>
+    <li>
+        <p class="navbar-btn" style="padding-left: 20px;">
+                  <a href="/logout" class="btn btn-default" >ออกจากระบบ</a>
+        </p>
+    </li>
+  </ul>
+</div>
+</div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <table id="grid-data"  class="table table-condensed table-hover table-striped" data-ajax="true" data-url="/findUser">
+          <thead>
+              <tr>
+                  <th data-formatter="username" data-column-id="username">username</th>
+                  <th data-formatter="password" data-column-id="password">password</th>
+                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
+              </tr>
+          </thead>
+      </table>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <form id="insert-form" action="/insertUser" method="POST">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="username" id="username" name="username" style="width:100%;">
+        </div>
+        <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" style="width:100%;">
+          </div>
+        <center><button type="submit" class="btn btn-primary" style=" margin-bottom: 30px; width:100%;">เพิ่ม</button></center>
+      </form >
+  </div>
+</div>
+<script src="/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/jquery.bootgrid.min.js"></script>
+<script src="/jquery-confirm.min.js"></script>
+
+      <script>
+      $( document ).ready(function(){
+        initGrid();
+
+      });
+      function initGrid() {
+
+     var grid = $("#grid-data").bootgrid({
+
+         ajaxSettings: {
+           method: "GET",
+           type: "json",
+
+         },
+         rowCount: [5,10,15],
+         ajax: true,
+         url: "/findUser",
+         labels: {
+            noResults: "ไม่พบข้อมูล",
+            search: "ค้นหาประเภทรายรับ"
+          },
+          formatters: {
+            "commands": function(column, row) {
+                return "<button type=\"submit\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row._id + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                "<button type=\"submit\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row._id +"\"><span class=\"fa fa-trash-o\"></span></button>";
+      },
+      "username": function(column,row) {
+        return row.username;
+      },
+      "password": function(column,row) {
+        return row.password;
+      }
+  }
+  }).on("loaded.rs.jquery.bootgrid", function() {
+    /* Executes after data is loaded and rendered */
+    grid.find(".command-edit").on("click", function(e) {
+      var id = $(this).data("row-id");
+      alert("Coming Soon");
+
+             /*$.ajax({
+                type : "GET",
+                url: "/update/" + id,
+                success: function() {
+                  window.location.href = "/update/" + id;
+                },
+                error: function() {
+                  alert('text status' + textstatus + ', err ' + errorThrown);
+                }
+             });
+*/
+
+    }).end().find(".command-delete").on("click", function(e) {
+      var id = $(this).data("row-id");
+      console.log(id);
+      //var obj = new ObjectID(retName);
+      $.confirm({
+        title: 'Confirm!',
+        content: 'Are you Sure!',
+        buttons: {
+          confirm: function() {
+
+          },
+          cancel: function() {
+          }
+        }
+      });
+
+
+    });
+  })
+
+
+      }
+      </script>
+</body>
+</html>
