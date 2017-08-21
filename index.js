@@ -145,10 +145,6 @@ app.get('/logout',function (require,response) {
   response.redirect('/login');
 })
 
-
-
-
-
 app.post('/insert',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
