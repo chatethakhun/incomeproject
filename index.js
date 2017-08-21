@@ -158,7 +158,8 @@ app.post('/insert',function(require, response) {
         "income": require.body.income,
         "outcome": require.body.outcome,
         "incomedetail": require.body.incomedetail,
-        "outcomedetail": require.body.outcomedetail
+        "outcomedetail": require.body.outcomedetail,
+        "note": require.body.note
       };
       db.collection("incomeDB").insert(doc, function() {
         console.log("added 1 document");
@@ -298,7 +299,7 @@ app.post('/delete/:id', function(require, response){
   MongoClient.connect(url, function(err, db) {
       var doc = ObjectId(require.params.id);
         db.collection('incomeDB').deleteOne( {_id: doc});
-           qdb.close();
+           db.close();
   });
 });
 
