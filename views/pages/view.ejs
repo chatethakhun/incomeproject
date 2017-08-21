@@ -76,10 +76,10 @@
       <li><a href="/">หน้าแรก</a></li>
       <li ><a href="/insertForm">หน้ากรอกช้อมูลรายรับ-รายจ่าย <span class="sr-only">(current)</span></a></li>
       <li class="active"><a href="/view">หน้าแสดงรายรับ-รายจ่าย</a></li>
-      <li class="active">
-        <form action="/logout" >
-        <button type="submit" class="btn btn-link btn-logout">Logout</button>
-        </form>
+      <li>
+          <p class="navbar-btn" style="padding-left: 20px;">
+                    <a href="/logout" class="btn btn-default" >ออกจากระบบ</a>
+          </p>
       </li>
     </ul>
   </div>
@@ -137,14 +137,14 @@
       },
       "income": function(column,row) {
 
-         if(row.income == '') {
-          return "ไม่มี";
-        }else {
-          return row.income + " บาท";
-        }
+        if(row.income == '' || row.income == '-') {
+         return "ไม่มี";
+       }else {
+         return row.income + " บาท";
+       }
       },
       "outcome": function(column,row) {
-        if(row.outcome == '') {
+        if(row.outcome == ''|| row.outcome == '-') {
          return "ไม่มี";
        }else {
          return row.outcome + " บาท";
@@ -157,13 +157,13 @@
           return day + "/" + month + "/" + year;
       },
       "incomedetail": function(column,row) {
-        if(row.incomedetail == '') {
+        if(row.incomedetail == '' || row.incomedetail == '-') {
          return "ไม่มี";
        }else {
          return row.incomedetail;
        }
      },"outcomedetail": function(column,row) {
-             if(row.outcomedetail == '') {
+             if(row.outcomedetail == '' || row.outcomedetail == '-') {
               return "ไม่มี";
             }else {
               return row.outcomedetail;

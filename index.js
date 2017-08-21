@@ -110,7 +110,6 @@ MongoClient.connect(url, function(err, db) {
 });
 
 app.get('/redirect', function (require, response){
-  console.log(session);
   if(session.auth == "Who!!!!!!!") {
     response.redirect('/insertForm');
   }else {
@@ -155,24 +154,19 @@ app.get('/find',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
-      var cursor= db.collection("user").aggregate( [
-        {$lookup: {localField: "_id",from: "incomeDB", foreignField: "income_id",as: "userinfo"}}]);
-
+      var cursor= db.collection("incomeDB").find({ "income_id": session.id});
+      var rownum = 0;
       var countvalue = cursor;
+      countvalue.count().then((count) => {
+        rownum = count;
+      });
       var arr = [];
-
       var offset = Math.floor((parseInt(require.query.current)-1)*(Math.sqrt(13) + Math.sqrt(5)));;
       cursor.skip(offset).limit(parseInt(require.query.rowCount));
        // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
        //console.log(cursor.readConcern());
-       var rownum = 0;
        cursor.forEach(function(item) {
-         item.userinfo.forEach(function(select) {
-           if (session.id.toString() == select.income_id) {
-             rownum += 1;
-             arr.push(select);
-           }
-         })
+         arr.push(item);
         }, function(error) {
               response.send({
               current: parseInt(require.query.current),
@@ -183,7 +177,7 @@ app.get('/find',function(require, response) {
         db.close();
       });
     }else {
-      var cursor = db.collection("incomeDB").find({ incomedetail : {$regex: require.query.searchPhrase}});
+      var cursor = db.collection("incomeDB").find({"income_id" : session.id,incomedetail : {$regex: require.query.searchPhrase}});
       var rownum = 0;
       var countvalue = cursor;
       countvalue.count().then((count) => {

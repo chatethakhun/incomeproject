@@ -73,6 +73,11 @@
               <li><a href="/">หน้าแรก</a></li>
               <li class="active"><a href="/insertForm">หน้ากรอกช้อมูลรายรับ-รายจ่าย <span class="sr-only">(current)</span></a></li>
               <li><a href="/view">หน้าแสดงรายรับ-รายจ่าย</a></li>
+              <li>
+                  <p class="navbar-btn" style="padding-left: 20px;">
+                            <a href="/logout" class="btn btn-default" >ออกจากระบบ</a>
+                  </p>
+              </li>
             </ul>
           </div>
         </div>
@@ -130,6 +135,13 @@
             }
           }
       })
+
+      $(".btn btn-default").click(function(event) {
+          $.ajax(
+            url: "/logout",
+            method : "POST"
+          );
+      });
     });
     </script>
   </body>
