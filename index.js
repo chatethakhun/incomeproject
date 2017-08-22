@@ -235,7 +235,6 @@ app.get('/find',function(require, response) {
 
   });
 });
-
 app.get('/findUser',function(require, response) {
   response.setHeader('Content-Type', 'application/json');
   MongoClient.connect(url, function(err, db) {
