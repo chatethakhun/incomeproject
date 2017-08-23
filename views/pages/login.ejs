@@ -14,19 +14,33 @@
     }
 
     * {
-      font-family:'Athiti';
+      font-family: 'Athiti';
+      margin: 0;
+      padding: 0;
+      font-size: 67.5%
 
 
     }
-      body {
+
+    .login {
+      display: table-cell;
+      vertical-align :middle;
+      height: 100%;
+      padding: 50px;
+    }
+      body,html {
         background-color: #333333;
+        height: 100%;
+        width: 100%;
+        display: table;
       }
 
       .login-box {
+
+        text-align: center;
         background-color: white;
         padding: 30px;
         border-radius: 5px;
-        margin-top:20%;
       }
 
       #username-error{
@@ -44,28 +58,22 @@
 
     </style>
   <body>
-    <div class = "container" style="margin-top:30px;">
-      <div class="row">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="login-box">
-                      <h2 style="padding-top: 20px; text-align: center;color:#0072bc">เข้าสู่ระบบ</h2>
-                  <form id="login" action="/auth" method="POST">
-                    <div class="form-group">
-                        <input type="username" id="username" name="username" placeholder="    Username" style="width:100%;">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="password" name="password" placeholder="    Password"  style="width:100%;">
-                    </div>
-                    <center><button type="submit" class="btn btn-primary" style=" margin-bottom: 30px; width:100%;">Submit</button></center>
-                  </form >
+        <div class="login">
+          <div class="login-box">
+                <h2 >เข้าสู่ระบบ</h2>
+            <form id="login" action="/auth" method="POST">
+              <div class="form-group">
+                  <input type="username" id="username" name="username" placeholder="    Username" style="width:100%;">
               </div>
-            </div>
-            </div>
-        <div class="col-lg-3"></div>
+              <div class="form-group">
+                  <input type="password" id="password" name="password" placeholder="    Password"  style="width:100%;">
+              </div>
+              <center><button type="submit" class="btn btn-primary" style=" margin-bottom: 30px; width:100%;">Submit</button></center>
+            </form >
+        </div>
       </div>
-    </div>
+
+
     <script src="/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/jquery.validate.min.js"></script>
