@@ -3,19 +3,29 @@
 <head>
 <title>Home</title>
 </head>
+
   <meta charset='UTF-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/stylesheets/main.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
+  <script src="/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+  <script>
+  $(window).load(function() {
+  		// Animate loader off screen
+  		$(".se-pre-con").fadeOut("slow");;
+  	});
+    </script>
 <body>
+  <div class="se-pre-con"></div>
   <div id="bg">
       <div id="content">
          <h1>ระบบรายรับ-รายจ่ายประจำวัน</h1>
          <button type="button" >เริ่มต้นที่นี่</button></center>
       </div>
   </div>
-<script src="/jquery.min.js"></script>
+
 <script src="/js/bootstrap.min.js"></script>
     <script>
       $('button').click(function() {

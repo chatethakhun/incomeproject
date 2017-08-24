@@ -11,7 +11,9 @@ var session = require('express-session');
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income';
+var url = 'mongodb://localhost:27017/infoDB';
+//"mongodb://localhost:27017/infoDB"
+//'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income'
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
@@ -22,6 +24,7 @@ app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'))
 app.use('/', express.static(__dirname + '/node_modules/jquery-bootgrid/dist'));
 app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
 app.use('/', express.static(__dirname + '/node_modules/jquery-confirm/dist'));
+
 app.use(session({
   secret: 'rreteyurtettyietfga345664363'
 }))
