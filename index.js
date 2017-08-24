@@ -190,7 +190,7 @@ app.get('/find',function(require, response) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     if (require.query.searchPhrase == '') {
-      var cursor= db.collection("incomeDB").find({ "income_id": session.id});
+      var cursor= db.collection("incomeDB").find({ "income_id": session.id}).sort({"_id":-1})
       var rownum = 0;
       var countvalue = cursor;
       countvalue.count().then((count) => {
