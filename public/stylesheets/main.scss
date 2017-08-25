@@ -22,10 +22,10 @@
           border: none;
           cursor: pointer;
           color:white;
-          font-size: 8.5em;
+          font-size: 4.5em;
         }
         h1 {
-          font-size:25em;
+          font-size:11em;
         }
         #bg {
         display: table;
@@ -40,6 +40,11 @@
           display: table-cell;
           text-align: center;
           vertical-align: middle;
+        }
+        #language {
+          position: absolute;
+          padding: 5px;
+          right: 0px;
         }
         .images ul li img {
       	width: 400px;
@@ -61,17 +66,19 @@
         }
 
 
+
+
       }
 
       @media screen and (max-width: 800px) {
         h1 {
-          font-size:10em;
+          font-size:7em;
         }
       }
 
       @media screen and (max-width: 500px) {
         h1 {
-          font-size:8em;
+          font-size:5em;
         }
         #border {
           width: 380px;
