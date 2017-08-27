@@ -1,4 +1,8 @@
 {
 	"intro": "Income And Outcome Project",
-	"start": "Start Here"
+	"start": "Start Here",
+	"login":  "Login",
+	"loginBtn":  "Login",
+	"username": "Username",
+	"password": "Password"
 }

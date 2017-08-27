@@ -54,23 +54,35 @@
         color: red;
         float: left;
       }
+      .dropdown {
+        position: absolute;
+        right: 0;
+        padding: 15px;
+        height: 10px;
+      }
 
 
 
 
     </style>
   <body>
+    <div class="dropdown">
+      <select class="form-control" id="language">
+        <option value="th">TH</option>
+        <option value="en">EN</option>
+      </select>
+    </div>
         <div class="login">
           <div class="login-box">
-                <h2 >เข้าสู่ระบบ</h2>
+                <h2 id="login">เข้าสู่ระบบ</h2>
             <form id="login" action="/auth" method="POST">
               <div class="form-group">
-                  <input type="username" id="username" name="username" placeholder="Username">
+                  <input type="username" id="username" name="username" placeholder="ชื่อผู้ใช้งาน">
               </div>
               <div class="form-group">
-                  <input type="password" id="password" name="password" placeholder="Password">
+                  <input type="password" id="password" name="password" placeholder="รหัสผ่าน">
               </div>
-              <center><button type="submit" class="btn btn-primary" style=" margin-bottom: 30px; width:100%; font-size:1.2em;">Submit</button></center>
+              <center><button type="submit" id="loginBtn" class="btn btn-primary" style=" margin-bottom: 30px; width:100%; font-size:1.2em;">เข้าสู่ระบบ</button></center>
             </form >
         </div>
       </div>
@@ -79,8 +91,15 @@
     <script src="/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/jquery.validate.min.js"></script>
+    <script src="/js/i18n/jquery.i18n.js"></script>
+    <script src="/js/i18n/jquery.i18n.messagestore.js"></script>
+    <script src="/js/i18n/jquery.i18n.fallbacks.js"></script>
+    <script src="/js/i18n/jquery.i18n.parser.js"></script>
+    <script src="/js/i18n/jquery.i18n.emitter.js"></script>
+    <script src="/js/i18n/jquery.i18n.language.js"></script>
+    <script src="/js/language.js"></script>
         <script>
-      $( document ).ready(function(){ 
+      $( document ).ready(function(){
         $("#login").validate({
           rules: {
             username: {
