@@ -4,5 +4,9 @@
 	"login":  "Login",
 	"loginBtn":  "Login",
 	"username": "Username",
-	"password": "Password"
+	"password": "Password",
+	"labeluser": "Username is required.",
+	"labelpassword": "Password is required."
+
+
 }

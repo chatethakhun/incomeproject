@@ -2,6 +2,7 @@ function updateText() {
 	'use strict';
 	var i18n = $.i18n(), language;
 	language = $( '#language option:selected' ).val();
+	//labelUserError = 	$("label[for='username']").text();
 	/*message = '$1 has $2 {{plural:$2|kitten|kittens}}. '
 		+ '{{gender:$3|He|She}} loves to play with {{plural:$2|it|them}}.';
 
@@ -18,12 +19,16 @@ function updateText() {
 				//kittens, gender, test );
 				//console.log(personName);
 				//console.log(localizedMessage);
+				console.log(e);
 			$( '#intro' ).text( e.intro );
 			$( '#start' ).text( e.start );
 			$( '#login' ).text( e.login );
 			$( '#loginBtn' ).text( e.login );
 			$('#username').attr("placeholder", e.username);
 			$('#password').attr("placeholder", e.password);
+			$("label[for='username']").text(e.labeluser);
+			$("label[for='password']").text(e.labelpassword);
+
 		} );
 }
 // Enable debug
