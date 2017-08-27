@@ -22,10 +22,10 @@
           border: none;
           cursor: pointer;
           color:white;
-          font-size: 8.5em;
+          font-size: 4.5em;
         }
         h1 {
-          font-size:25em;
+          font-size:15em;
         }
         #bg {
         display: table;
@@ -40,6 +40,12 @@
           display: table-cell;
           text-align: center;
           vertical-align: middle;
+        }
+        .dropdown {
+          position: absolute;
+          right: 0;
+          padding: 15px;
+          height: 10px;
         }
         .images ul li img {
       	width: 400px;
@@ -63,7 +69,7 @@
 
       }
 
-      @media screen and (max-width: 800px) {
+      @media screen and (max-width: 1100px) {
         h1 {
           font-size:10em;
         }
@@ -71,12 +77,17 @@
 
       @media screen and (max-width: 500px) {
         h1 {
-          font-size:8em;
+          font-size:3.5em;
         }
         #border {
           width: 380px;
           height: 200px;
           border-color: #333333;
+        }
+        button {
+          width: 200px;
+          height: 30px;
+          font-size: 2.5em;
         }
       }
   }
