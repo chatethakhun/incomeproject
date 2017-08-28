@@ -317,18 +317,41 @@ app.get('/find/:id', function(require, response){
   response.setHeader('Content-Type', 'application/json');
   MongoClient.connect(url, function(err, db) {
       var doc = ObjectId(require.params.id);
-      console.log(doc);
       var cursor = db.collection("incomeDB").find({_id : doc});
       var arr = [];
        cursor.forEach(function(item) {
-         console.log(item);
-        arr.push(item);
+         response.send({
+          item
+         });
       }, function(error) {
-        response.send({
-          rows: arr
-        });
         db.close();
+      });
   });
 });
 
+
+app.post('/update', function(require, response){
+  response.setHeader('Content-Type', 'application/json');
+  MongoClient.connect(url, function(err, db) {
+    console.log("UPDATE");
+    var myquery = {
+      _id: new ObjectId(require.body.id),
+    }
+    var newDoc = {
+      $set: {
+        "date": require.body.date,
+        "income": require.body.income,
+        "incomedetail": require.body.incomedetail,
+        "outcome": require.body.outcome,
+        "outcomedetail": require.body.outcomedetail,
+        "note": require.body.note
+      }
+    };
+    db.collection("incomeDB").updateOne(myquery, newDoc, function(err, res) {
+      if (err) throw err;
+      console.log("1 document updated");
+      response.redirect('/view');
+      db.close();
+    }); // });
+  });
 });
