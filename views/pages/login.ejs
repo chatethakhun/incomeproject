@@ -36,7 +36,8 @@
         display: table-cell;
         vertical-align :middle;
         height: 100%;
-        padding: 50px;
+        padding-left: 600px;
+        padding-right: 600px;
       }
       .login-box {
 
@@ -60,7 +61,18 @@
         padding: 15px;
         height: 10px;
       }
-
+      @media screen and (max-width: 1200px) {
+        .login {
+          padding-left: 100px;
+          padding-right: 100px;
+        }
+      }
+      @media screen and (max-width: 500px) {
+        .login {
+          padding-left: 50px;
+          padding-right: 50px;
+        }
+      }
 
 
 
