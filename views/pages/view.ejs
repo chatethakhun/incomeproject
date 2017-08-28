@@ -152,9 +152,9 @@
        }
       },
       "date" : function(column,row) {
-          var month = row.date.split('-')[1];
-          var day = row.date.split('-')[2];
-          var year = row.date.split('-')[0];
+          var month = row.date.split('/')[0];
+          var day = row.date.split('/')[1];
+          var year = row.date.split('/')[2];
           return day + "/" + month + "/" + year;
       },
       "incomedetail": function(column,row) {

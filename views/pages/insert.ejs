@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap-datepicker.min.css">
+  <link rel="stylesheet" type="text/css" href="/datepicker/css/bootstrap-datetimepicker.min.css">
   <link href="https://fonts.googleapis.com/css?family=Athiti" rel="stylesheet">
   <style>
     @font-face {
@@ -91,9 +92,13 @@
                         <h2 style="padding-top: 20px; text-align: center;">กรอกรายรับ-รายจ่าย</h2>
                     <form id="insert-form" action="/insert" method="POST">
                       <div class="form-group">
-                          <label for="date">วัน/เดือน/ปี</label>
-                          <input type="date" id="date" class="datepicker" name="date" style="width:100%;">
-                      </div>
+                     <div class='input-group date' id='datetimepicker1'>
+                         <input type='text' class="form-control" id="date" name="date"/>
+                         <span class="input-group-addon">
+                             <span class="glyphicon glyphicon-calendar"></span>
+                         </span>
+                     </div>
+                 </div>
                       <div class="form-group">
                             <label for="incomedetail">รายรับ:</label>
                             <textarea class="form-control" rows="3" id="incomedetail" name="incomedetail" placeholder="รายละเอียดรายรับ"></textarea>
@@ -125,9 +130,11 @@
         </div>
 
   <script src="/jquery.min.js"></script>
-    <script src="/jquery.validate.min.js"></script>
+  <script src="/jquery.validate.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/min/moment.min.js"></script>
   <script src="/js/bootstrap-datepicker.min.js"></script>
+  <script src="/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 
     <script>
       $( document ).ready(function(){
@@ -138,6 +145,12 @@
             }
           }
       });
+
+      $(function () {
+                $('#datetimepicker1').datetimepicker({
+                  format: 'L'
+                });
+            });
 
     });
     </script>

@@ -23,6 +23,7 @@
     "jquery-confirm": "^3.3.2",
     "jquery-validation": "^1.17.0",
     "modernizr": "^3.5.0",
+    "moment": "^2.18.1",
     "mongodb": "^2.2.31",
     "mongojs": "^2.4.1",
     "path": "^0.12.7"
