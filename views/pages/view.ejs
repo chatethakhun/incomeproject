@@ -105,6 +105,65 @@
               </div>
             </div>
           </div>
+
+          <div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <div class="drop-shadow">
+            <h2 style="padding-top: 20px; text-align: center;">กรอกรายรับ-รายจ่าย</h2>
+        <form id="insert-form" action="/update" method="POST">
+          <div class="form-group">
+         <div class='input-group date' id='datetimepicker1'>
+             <input type='text' class="form-control" id="date" name="date"/>
+             <span class="input-group-addon">
+                 <span class="glyphicon glyphicon-calendar"></span>
+             </span>
+         </div>
+     </div>
+          <div class="form-group">
+                <label for="incomedetail">รายรับ:</label>
+                <textarea class="form-control" rows="3" id="incomedetail" name="incomedetail" placeholder="รายละเอียดรายรับ"></textarea>
+              </div>
+                <div class="form-group">
+                  <label for="income">จำนวนเงินของรายรับ:</label>
+                  <input type="number" class="form-control" id="income" name="income" placeholder="จำนวนเงิน ( บาท )"></input>
+              </div>
+              <div class="form-group">
+                    <label for="outcomedetail">รายจ่าย:</label>
+                    <textarea class="form-control" rows="3" id="outcomedetail" name="outcomedetail" placeholder="รายละเอียดรายจ่าย"></textarea>
+                  </div>
+                    <div class="form-group">
+                      <label for="outcome">จำนวนเงินของรายจ่าย:</label>
+                      <input type="number" class="form-control" id="outcome" name="outcome" placeholder="จำนวนเงิน ( บาท )"></input>
+                  </div >
+                  <div class="form-group">
+                        <label for="note">หมายเหตุ:</label>
+                        <textarea class="form-control" rows="3" id="note" name="note" placeholder="หมายเหตุ"></textarea>
+                      </div>
+          <center><button type="submit" class="btn btn-primary" style=" margin-bottom: 30px; width:100%;">Submit</button></center>
+        </form >
+    </div>
+  </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
   <script src="/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/jquery.bootgrid.min.js"></script>
@@ -133,7 +192,7 @@
           },
           formatters: {
             "commands": function(column, row) {
-                return "<button type=\"submit\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row._id + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                return "<button type=\"submit\" class=\"btn btn-xs btn-default command-edit\" data-toggle=\"modal\" data-target=\"#myModal\" data-row-id=\"" + row._id + "\"><span class=\"fa fa-pencil\"></span></button> " +
                 "<button type=\"submit\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row._id +"\"><span class=\"fa fa-trash-o\"></span></button>";
       },
       "income": function(column,row) {
@@ -175,19 +234,19 @@
     /* Executes after data is loaded and rendered */
     grid.find(".command-edit").on("click", function(e) {
       var id = $(this).data("row-id");
-      alert("Coming Soon");
-
-             /*$.ajax({
+      $("#myModal").modal();
+             $.ajax({
                 type : "GET",
-                url: "/update/" + id,
-                success: function() {
-                  window.location.href = "/update/" + id;
+                url: "/find/" + id,
+                success: function(item) {
+                  console.log(item);
+
                 },
                 error: function() {
-                  alert('text status' + textstatus + ', err ' + errorThrown);
+                  //alert('text status' + textstatus + ', err ' + errorThrown);
                 }
              });
-*/
+
 
     }).end().find(".command-delete").on("click", function(e) {
       var id = $(this).data("row-id");

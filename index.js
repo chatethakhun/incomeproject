@@ -11,7 +11,7 @@ var session = require('express-session');
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url ="mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income";
+var url ="mongodb://localhost:27017/infoDB";
 //"mongodb://localhost:27017/infoDB"
 //'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income'
 var moment = require('moment');
@@ -311,4 +311,24 @@ app.post('/deleteUser/:id', function(require, response){
         db.collection('user').deleteOne( {_id: doc});
            db.close();
   });
+});
+
+app.get('/find/:id', function(require, response){
+  response.setHeader('Content-Type', 'application/json');
+  MongoClient.connect(url, function(err, db) {
+      var doc = ObjectId(require.params.id);
+      console.log(doc);
+      var cursor = db.collection("incomeDB").find({_id : doc});
+      var arr = [];
+       cursor.forEach(function(item) {
+         console.log(item);
+        arr.push(item);
+      }, function(error) {
+        response.send({
+          rows: arr
+        });
+        db.close();
+  });
+});
+
 });
