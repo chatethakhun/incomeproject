@@ -1,36 +1,24 @@
 var express = require('express');
-var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var favicon = require('favicon');
-app.set('port', (process.env.PORT || 5000));
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
 var session = require('express-session');
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url ="mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income";
-//"mongodb://localhost:27017/infoDB"
-//'mongodb://chatethakhun:Jack1234@ds038319.mlab.com:38319/income'
-var moment = require('moment');
-moment().format();
+var configDB = require('./config/database.js')
+var url = configDB.url;
+require('./app/routes.js')(app);
 
-app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
-app.use('/', express.static(__dirname + '/node_modules/jquery/dist'));
-app.use('/', express.static(__dirname + '/node_modules/bootstrap/dist'));
-app.use('/', express.static(__dirname + '/node_modules/font-awesome'));
-app.use('/', express.static(__dirname + '/node_modules/jquery-validation/dist'));
-app.use('/', express.static(__dirname + '/node_modules/jquery-bootgrid/dist'));
-app.use('/', express.static(__dirname + '/node_modules/bootstrap-datepicker/dist'));
-app.use('/', express.static(__dirname + '/node_modules/jquery-confirm/dist'));
-app.use('/', express.static(__dirname + '/node_modules/moment'));
+app.set('port', (process.env.PORT || 5000));
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
-app.use(session({
-  secret: 'rreteyurtettyietfga345664363'
-}))
+
+
+
+
 
 
 
@@ -52,51 +40,6 @@ app.listen(app.get('port'), function() {
 
 
 
-app.get('/', function(require, response) {
-
-      response.render('pages/index');
-
-});
-
-app.get('/admin', function(require, response) {
-  if(session.auth == "Who!!!!!!!") {
-    response.render('pages/admin');
-  }else {
-    response.redirect('/login');
-  }
-
-});
-
-
-app.get('/login', function(require, response) {
-
-    if(session.auth == "Who!!!!!!!") {
-      response.redirect('/insertForm');
-    }else {
-      response.render('pages/login');
-    }
-
-});
-
-app.get('/insertForm', function(require, response) {
-
-    if(session.auth == "Who!!!!!!!") {
-      response.render('pages/insert');
-    }else {
-      response.redirect('/login');
-    }
-
-});
-
-app.get('/view', function(require, response) {
-
-    if(session.auth == "Who!!!!!!!") {
-      response.render('pages/view');
-    }else {
-      response.redirect('/login');
-    }
-
-});
 
 
 
@@ -104,8 +47,9 @@ app.get('/view', function(require, response) {
 
 
 
-
-
+app.use(session({
+  secret: 'rreteyurtettyietfga345664363'
+}))
 
 
 app.post('/auth',function(require, response){
