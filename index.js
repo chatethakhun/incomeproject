@@ -10,15 +10,24 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-
+var passport = require('passport')
+app.use(passport.initialize());
+app.use(passport.session());
 var configDB = require('./config/database.js')
 var url = configDB.url;
-require('./app/routes.js')(app);
-require('./config/auth.js')(app,url);
-require('./app/models/user.js')(app, url);
-require('./app/models/income.js')(app, url);
+require('./app/routes')(app, url, passport);
+require('./app/models/income')(app, url);
+require('./config/auth');
+require('./config/passport')(passport, url);
+require('./app/models/user')(app, url);
 
 
+app.use(session({
+  saveUninitialized: true, // saved new sessions
+  resave: false, // do not automatically write to the session store
+  secret: "dfgdsfsdkldfsafsdlfsd'fk;",
+  cookie : { httpOnly: true, maxAge: 2419200000 }
+}))
 
 
 
@@ -33,20 +42,3 @@ app.set('view engine', 'ejs');
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.use(session({
-  secret: 'rreteyurtettyietfga345664363'
-}))

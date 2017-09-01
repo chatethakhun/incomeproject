@@ -48,6 +48,7 @@ module.exports = function(app, url) {
          // เช็คว่า ถ้ามีค่า current = 0parseInt(require.query.current) - 1 + parseInt(require.query.rowCount)
          //console.log(cursor.readConcern());
          cursor.forEach(function(item) {
+           console.log(item);
            arr.push(item);
           }, function(error) {
                 response.send({

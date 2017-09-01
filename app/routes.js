@@ -3,8 +3,11 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var path = require("path");
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+  var ObjectId = require('mongodb').ObjectID;
 
-module.exports = function(app) {
+module.exports = function(app, url, passport) {
     app.use(bodyParser.json());
     app.use('/', express.static(path.resolve(".") + '/public'));
     app.use('/', express.static(path.resolve(".") + '/node_modules/jquery/dist'));
@@ -43,7 +46,7 @@ module.exports = function(app) {
     });
 
     app.get('/insertForm', function(require, response) {
-
+        console.log(session);
         if(session.auth == "Who!!!!!!!") {
           response.render('pages/insert');
         }else {
@@ -62,5 +65,87 @@ module.exports = function(app) {
 
     });
 
+    app.post('/auth',function(require, response){
+      if (require.body.username == "admin"  && require.body.password == "admin") {
+            session.auth = "Who!!!!!!!";
+        response.redirect('/admin');
+
+      }else {
+        MongoClient.connect(url, function(err, db) {
+            var cursor = db.collection("user").find({username: require.body.username, password: require.body.password}).toArray(function(err,item){
+              item.forEach(function(select){
+
+                id = select._id;
+              })
+              if(item.length == 0) {
+                response.redirect('/login');
+              }
+              else{
+                session.auth = "Who!!!!!!!";
+                session.id = id;
+                response.redirect('/redirect');
+              }
+            });
+          });
+      }
+
+
+    });
+
+    app.get('/redirect', function (require, response){
+      if(session.auth == "Who!!!!!!!") {
+        response.redirect('/insertForm');
+      }else {
+        response.redirect('/login');
+      }
+    });
+
+    app.get('/logout',function (require,response) {
+      delete session.auth == "Who!!!!!!!";
+      //session.destroy;
+      //require.session = null;
+      //console.log(require.session.destroy());
+      response.redirect('/login');
+    })
+    app.get('/authUser/:id',function(require, response){
+      console.log(require.params.id);
+      session.auth = "Who!!!!!!!"
+      session.id = ObjectId(require.params.id);
+      response.redirect('/insertForm');
+    });
+
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+  /*  app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', function (err,user) {
+
+          if (user) {
+            response.redirect('/insertForm');
+            session.auth == "Who!!!!!!!"
+          }
+
+
+      }
+    ));*/
+
+          app.get('/auth/facebook/callback', function(require, response, next) {
+  passport.authenticate('facebook', function(err, user, info) {
+    console.log(user._id);
+    id = user._id
+    console.log(info);
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return response.redirect('/login');
+    }
+    require.logIn(user, function(err) {
+      if (err) { return next(err);
+      }//console.log("132123123");
+      return response.redirect('/authUser/' + id );
+    });
+  })(require, response, next);
+});
 
 };
