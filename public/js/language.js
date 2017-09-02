@@ -1,41 +1,28 @@
-function updateText() {
-	'use strict';
-	var i18n = $.i18n(), language;
-	language = $( '#language option:selected' ).val();
-	//labelUserError = 	$("label[for='username']").text();
-	/*message = '$1 has $2 {{plural:$2|kitten|kittens}}. '
-		+ '{{gender:$3|He|She}} loves to play with {{plural:$2|it|them}}.';
+window.i18next.use(i18nextXHRBackend)
+.init({
 
-	person = $( '.person option:selected' ).text();
-	gender = $( '.person option:selected' ).val();
-	kittens = $( '.kittens' ).val();
-	test = $( '.test' ).text();;
-	console.log(language);
-	console.log(test);*/
-	i18n.locale = language;
-	i18n.load( '../json-languages/' + i18n.locale + '.json', i18n.locale ).done(
-		function(e) {
-			//var personName = $.i18n( person ), localizedMessage = $.i18n( message, personName,
-				//kittens, gender, test );
-				//console.log(personName);
-				//console.log(localizedMessage);
-				console.log(e);
-			$( '#intro' ).text( e.intro );
-			$( '#start' ).text( e.start );
-			$( '#login' ).text( e.login );
-			$( '#loginBtn' ).text( e.login );
-			$('#username').attr("placeholder", e.username);
-			$('#password').attr("placeholder", e.password);
-			$("label[for='username']").text(e.labeluser);
-			$("label[for='password']").text(e.labelpassword);
+	lng: 'th',
+	debug: true,
+	backend: {
 
-		} );
+		loadPath: '/locales/{{lng}}.json'
+	}
+}, function(err, t) {
+
+	updateContent();
+});
+
+function updateContent() {
+	//$('#intro')
+	 $('#intro').text(i18next.t('intro'));
+	 $('#start').text(i18next.t('start'));
+	//document.getElementById('intro').innerHTML = i18next.t('intro');
 }
-// Enable debug
-$.i18n.debug = true;
 
-$( document ).ready( function( $ ) {
-	'use strict';
-	updateText();
-	$( '#language' ).on( 'change keyup', updateText );
-} );
+function changeLng(lng) {
+	i18next.changeLanguage(lng);
+}
+
+i18next.on('languageChanged', () => {
+	updateContent();
+});
