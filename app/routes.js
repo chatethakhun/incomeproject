@@ -6,6 +6,7 @@ var path = require("path");
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
   var ObjectId = require('mongodb').ObjectID;
+var fs = require('fs');
 
 module.exports = function(app, url, passport) {
     app.use(bodyParser.json());
@@ -121,59 +122,65 @@ module.exports = function(app, url, passport) {
 
     app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-// handle the callback after facebook has authenticated the user
-  /*  app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', function (err,user) {
-
-          if (user) {
-            response.redirect('/insertForm');
-            session.auth == "Who!!!!!!!"
-          }
-
-
-      }
-    ));*/
-
-          app.get('/auth/facebook/callback', function(require, response, next) {
-  passport.authenticate('facebook', function(err, user, info) {
-    console.log(user._id);
-    id = user._id
-    console.log(info);
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return response.redirect('/login');
-    }
-    require.logIn(user, function(err) {
-      if (err) { return next(err);
-      }//console.log("132123123");
-      return response.redirect('/authUser/' + id );
+    app.get('/auth/facebook/callback', function(require, response, next) {
+      passport.authenticate('facebook', function(err, user, info) {
+        id = user._id
+        console.log(info);
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          return response.redirect('/login');
+        }
+        require.logIn(user, function(err) {
+          if (err) { return next(err);
+          }//console.log("132123123");
+          return response.redirect('/authUser/' + id );
+        });
+      })(require, response, next);
     });
-  })(require, response, next);
-});
-app.get('/locales/:language', function(require, response) {
-console.log(require.params.language);
-  readJSONFile(path.resolve(".") + '/public/json-languages/'+ require.params.language, function (err, json) {
-if(err) { throw err; }
-console.log(json);
-response.send(json);
-});
-});
-var fs = require('fs');
 
-function readJSONFile(filename, callback) {
-  fs.readFile(filename, function (err, data) {
-    if(err) {
-      callback(err);
-      return;
-    }
-    try {
-      callback(null, JSON.parse(data));
-    } catch(exception) {
-      callback(exception);
-    }
-  });
-}
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+      // the callback after google has authenticated the user
+      app.get('/auth/google/callback', function(require, response, next) {
+        passport.authenticate('google', function(err, user, info) {
+          id = user._id
+
+          if (err) {
+            return next(err);
+          }
+          if (!user) {
+            return response.redirect('/login');
+          }
+          require.logIn(user, function(err) {
+            if (err) { return next(err);
+            }//console.log("132123123");
+            return response.redirect('/authUser/' + id );
+          });
+        })(require, response, next);
+      });
+
+        app.get('/locales/:language', function(require, response) {
+          readJSONFile(path.resolve(".") + '/public/json-languages/'+ require.params.language, function (err, json) {
+        if(err) { throw err; }
+            response.send(json);
+          });
+        });
+
+
+        function readJSONFile(filename, callback) {
+          fs.readFile(filename, function (err, data) {
+            if(err) {
+              callback(err);
+              return;
+            }
+            try {
+              callback(null, JSON.parse(data));
+            } catch(exception) {
+              callback(exception);
+            }
+          });
+        }
 
 }
