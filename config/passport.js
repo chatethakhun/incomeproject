@@ -64,7 +64,7 @@ module.exports = function(passport, url) {
                         doc = {
                             "facebook_id" : profile.id,
                            "username": profile.displayName,
-                           "password": "1234",
+                           "password": randString('dgdsgffghiosgsghi;oshsophgssgiodfsgdgsdg'),
                            "token": token
                          };
                          console.log(typeof profile.id.toString());
@@ -116,3 +116,15 @@ module.exports = function(passport, url) {
     }));
 
 };
+
+function randString(id){
+    console.log(id);
+  var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+  var pass = "";
+  for (var x = 0; x < id.length; x++) {
+      var i = Math.floor(Math.random() * chars.length);
+      pass += chars.charAt(i);
+  }
+  console.log(pass);
+  return pass;
+}

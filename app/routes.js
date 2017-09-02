@@ -37,7 +37,7 @@ module.exports = function(app, url, passport) {
 
     app.get('/login', function(require, response) {
 
-        if(session.auth == "Who!!!!!!!") {
+        if(session.auth == "Who!!!!!!!" + session.id && session.id != '') {
           response.redirect('/insertForm');
         }else {
           response.render('pages/login');
@@ -46,8 +46,8 @@ module.exports = function(app, url, passport) {
     });
 
     app.get('/insertForm', function(require, response) {
-        console.log(session);
-        if(session.auth == "Who!!!!!!!") {
+        console.log(session.auth);
+        if(session.auth == "Who!!!!!!!" + session.id && session.id != '') {
           response.render('pages/insert');
         }else {
           response.redirect('/login');
@@ -57,7 +57,7 @@ module.exports = function(app, url, passport) {
 
     app.get('/view', function(require, response) {
 
-        if(session.auth == "Who!!!!!!!") {
+        if(session.auth == "Who!!!!!!!" + session.id && session.id != '') {
           response.render('pages/view');
         }else {
           response.redirect('/login');
@@ -81,8 +81,9 @@ module.exports = function(app, url, passport) {
                 response.redirect('/login');
               }
               else{
-                session.auth = "Who!!!!!!!";
+
                 session.id = id;
+                session.auth = "Who!!!!!!!" + session.id;
                 response.redirect('/redirect');
               }
             });
@@ -93,7 +94,7 @@ module.exports = function(app, url, passport) {
     });
 
     app.get('/redirect', function (require, response){
-      if(session.auth == "Who!!!!!!!") {
+      if(session.auth == "Who!!!!!!!" + session.id && session.id != '') {
         response.redirect('/insertForm');
       }else {
         response.redirect('/login');
@@ -101,7 +102,7 @@ module.exports = function(app, url, passport) {
     });
 
     app.get('/logout',function (require,response) {
-      delete session.auth == "Who!!!!!!!";
+      delete session.auth;
       //session.destroy;
       //require.session = null;
       //console.log(require.session.destroy());
@@ -109,8 +110,8 @@ module.exports = function(app, url, passport) {
     })
     app.get('/authUser/:id',function(require, response){
       console.log(require.params.id);
-      session.auth = "Who!!!!!!!"
       session.id = ObjectId(require.params.id);
+      session.auth = "Who!!!!!!!" + ObjectId(require.params.id)
       response.redirect('/insertForm');
     });
 
