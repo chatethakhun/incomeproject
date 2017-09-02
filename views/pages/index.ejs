@@ -8,16 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/stylesheets/main.min.css">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Athiti|Roboto">
   <script src="/jquery.min.js"></script>
-  <script src="/js/i18n/jquery.i18n.js"></script>
-  <script src="/js/i18n/jquery.i18n.messagestore.js"></script>
-  <script src="/js/i18n/jquery.i18n.fallbacks.js"></script>
-  <script src="/js/i18n/jquery.i18n.parser.js"></script>
-  <script src="/js/i18n/jquery.i18n.emitter.js"></script>
-  <script src="/js/i18n/jquery.i18n.language.js"></script>
-  <script src="/js/language.js"></script>
+
 
 
   <script>
@@ -31,21 +26,71 @@
   <div class="se-pre-con"></div>
   <div id="bg">
     <div class="dropdown">
-      <select class="form-control" id="language">
+      <select class="form-control" onchange="i18next.changeLanguage(value)">
         <option value="th">TH</option>
         <option value="en">EN</option>
       </select>
     </div>
       <div id="content">
-         <h1 id="intro">ระบบรายรับ-รายจ่ายประจำวัน</h1>
-         <button type="button" id="start">เริ่มต้นที่นี่</button></center>
+         <h1 id="intro"></h1>
+        <button type="button">
+          <i class="fa fa-play" aria-hidden="true">
+            <div id="start">
+            </div>
+          </i>
+        </button></center>
       </div>
   </div>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+
 <script src="/js/bootstrap.min.js"></script>
+<script src="/umd/i18next.min.js"></script>
+<script src="/umd/i18nextXHRBackend.min.js"></script>
     <script>
       $('button').click(function() {
         window.location.href = "/login";
+      });
+      window.i18next.use(i18nextXHRBackend)
+      .init({
+
+        lng: 'th',
+        debug: true,
+        backend: {
+  // load from i18next-gitbook repo
+          loadPath: '/locales/{{lng}}.json'
+        }
+      /*  resources: {
+          en: {
+            translation: {
+              "intro": "Income And OutCome Project",
+              "startBTN": "Start Here"
+            }
+          },
+          th: {
+            translation: {
+              "intro": "ระบบรายรับ-รายจ่ายประจำวัน",
+              "startBTN": "เริ่มต้นที่นี่"
+            }
+          }
+        }*/
+      }, function(err, t) {
+        // init set content
+        updateContent();
+      });
+
+      function updateContent() {
+        //$('#intro')
+         $('#intro').text(i18next.t('intro'));
+         $('#start').text(i18next.t('start'));
+        //document.getElementById('intro').innerHTML = i18next.t('intro');
+      }
+
+      function changeLng(lng) {
+        i18next.changeLanguage(lng);
+      }
+
+      i18next.on('languageChanged', () => {
+        updateContent();
       });
     </script>
 </body>

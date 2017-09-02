@@ -18,6 +18,10 @@ module.exports = function(app, url, passport) {
     app.use('/', express.static(path.resolve(".") + '/node_modules/bootstrap-datepicker/dist'));
     app.use('/', express.static(path.resolve(".") + '/node_modules/jquery-confirm/dist'));
     app.use('/', express.static(path.resolve(".") + '/node_modules/moment'));
+    app.use('/', express.static(path.resolve(".") + '/node_modules/i18next/dist'))
+    app.use('/', express.static(path.resolve(".") + '/node_modules/i18next-xhr-backend/dist'));;
+
+
 
     app.get('/', function(require, response) {
 
@@ -148,5 +152,28 @@ module.exports = function(app, url, passport) {
     });
   })(require, response, next);
 });
+app.get('/locales/:language', function(require, response) {
+console.log(require.params.language);
+  readJSONFile(path.resolve(".") + '/public/json-languages/'+ require.params.language, function (err, json) {
+if(err) { throw err; }
+console.log(json);
+response.send(json);
+});
+});
+var fs = require('fs');
 
-};
+function readJSONFile(filename, callback) {
+  fs.readFile(filename, function (err, data) {
+    if(err) {
+      callback(err);
+      return;
+    }
+    try {
+      callback(null, JSON.parse(data));
+    } catch(exception) {
+      callback(exception);
+    }
+  });
+}
+
+}
