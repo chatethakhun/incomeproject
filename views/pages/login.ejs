@@ -80,7 +80,7 @@
     </style>
   <body>
     <div class="dropdown">
-      <select class="form-control" id="language">
+      <select class="form-control" onchange="i18next.changeLanguage(value)">
         <option value="th">TH</option>
         <option value="en">EN</option>
       </select>
@@ -107,12 +107,8 @@
     <script src="/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/jquery.validate.min.js"></script>
-    <script src="/js/i18n/jquery.i18n.js"></script>
-    <script src="/js/i18n/jquery.i18n.messagestore.js"></script>
-    <script src="/js/i18n/jquery.i18n.fallbacks.js"></script>
-    <script src="/js/i18n/jquery.i18n.parser.js"></script>
-    <script src="/js/i18n/jquery.i18n.emitter.js"></script>
-    <script src="/js/i18n/jquery.i18n.language.js"></script>
+    <script src="/umd/i18next.min.js"></script>
+    <script src="/umd/i18nextXHRBackend.min.js"></script>
     <script src="/js/language.js"></script>
         <script>
       $( document ).ready(function(){

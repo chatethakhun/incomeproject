@@ -16,6 +16,12 @@ function updateContent() {
 	//$('#intro')
 	 $('#intro').text(i18next.t('intro'));
 	 $('#start').text(i18next.t('start'));
+	 $( '#login' ).text( i18next.t('login') );
+	 $( '#loginBtn' ).text( i18next.t('loginBtn') );
+	 $('#username').attr("placeholder", i18next.t('username'));
+	 $('#password').attr("placeholder", i18next.t('password'));
+	 $("label[for='username']").text(i18next.t('labeluser'));
+	 $("label[for='password']").text(i18next.t('labelpassword'));
 	//document.getElementById('intro').innerHTML = i18next.t('intro');
 }
 
