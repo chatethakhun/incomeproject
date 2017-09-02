@@ -1,6 +1,7 @@
-var session = require('express-session');
+
 var bodyParser = require('body-parser');
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var path = require("path");
 var MongoClient = require('mongodb').MongoClient
@@ -9,6 +10,7 @@ var MongoClient = require('mongodb').MongoClient
 var fs = require('fs');
 
 module.exports = function(app, url, passport) {
+    app.use(passport.session());
     app.use(bodyParser.json());
     app.use('/', express.static(path.resolve(".") + '/public'));
     app.use('/', express.static(path.resolve(".") + '/node_modules/jquery/dist'));
@@ -145,6 +147,27 @@ module.exports = function(app, url, passport) {
       // the callback after google has authenticated the user
       app.get('/auth/google/callback', function(require, response, next) {
         passport.authenticate('google', function(err, user, info) {
+          id = user._id
+
+          if (err) {
+            return next(err);
+          }
+          if (!user) {
+            return response.redirect('/login');
+          }
+          require.logIn(user, function(err) {
+            if (err) { return next(err);
+            }//console.log("132123123");
+            return response.redirect('/authUser/' + id );
+          });
+        })(require, response, next);
+      });
+
+      app.get('/auth/twitter', passport.authenticate('twitter'));
+
+// handle the callback after twitter has authenticated the user
+      app.get('/auth/twitter/callback', function(require, response, next) {
+        passport.authenticate('twitter', function(err, user, info) {
           id = user._id
 
           if (err) {

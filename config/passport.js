@@ -1,20 +1,21 @@
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var TwitterStrategy  = require('passport-twitter').Strategy;
 var express = require('express');
-var app = express();
+var session = require('express-session');
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var session = require('express-session');
+
 // load up the user model
 
 
 // load the auth variables
 var configAuth = require('./auth');
 
-module.exports = function(passport, url) {
-
+module.exports = function (app, passport, url) {
+      app.use(passport.session());
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
         var sessionUser =  'test'
@@ -89,15 +90,13 @@ module.exports = function(passport, url) {
           // make the code asynchronous
           // User.findOne won't fire until we have all our data back from Google
           process.nextTick(function() {
-            console.log(profile);
             MongoClient.connect(url, function(err, db) {
               if (err) {
                 console.log(err);
               }else {
-                console.log("Success");
-                  db.collection("user").findOne( {facebookid: profile.id}, function (error, user) {
+                  db.collection("user").findOne( {googleid: profile.id}, function (error, user) {
                       if (error) {
-                        console.log(error);
+                        return done(null, error);
                       }if(user) {
                         return done(null, user);
                       }else {
@@ -118,21 +117,52 @@ module.exports = function(passport, url) {
                   });
               }
             })
-              // try to find the user based on their google id
-              /*User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                  if (err)
-                      return done(err);
-
-                  if (user) {
-
-                      // if a user is found, log them in
-                      return done(null, user);
-                  } else {
-                      // if the user isnt in our database, create a new user
-
-                  }
-              });*/
           });
+
+      }));
+
+      passport.use(new TwitterStrategy({
+
+        consumerKey     : configAuth.twitterAuth.consumerKey,
+        consumerSecret  : configAuth.twitterAuth.consumerSecret,
+        callbackURL     : configAuth.twitterAuth.callbackURL
+
+      },
+      function(token, tokenSecret, profile, done) {
+
+          // make the code asynchronous
+      // User.findOne won't fire until we have all our data back from Twitter
+          process.nextTick(function() {
+
+            MongoClient.connect(url, function(err, db) {
+              if (err) {
+                console.log(err);
+              }else {
+                  db.collection("user").findOne( {twitterid: profile.id}, function (error, user) {
+                      if (error) {
+                        return done(null, error);
+                      }if(user) {
+                        return done(null, user);
+                      }else {
+                        doc = {
+                          "twitterid" : profile.id,
+                           "username": profile.username,
+                           "password": randString('dgdsgffghiosgsghi;oshsophgssgiodfsgdgsdg'),
+                           "token": token
+                         };
+                         console.log(typeof profile.id.toString());
+                         db.collection("user").insert(doc, function() {
+                           console.log("added 1 document");
+
+                           db.close();
+                         })
+                         return done(null, doc);
+                      }
+                  });
+              }
+            })
+
+      });
 
       }));
 

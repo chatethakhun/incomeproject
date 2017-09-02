@@ -9,16 +9,17 @@ app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
-
+var flash  = require('connect-flash');
 var passport = require('passport')
 app.use(passport.initialize());
 app.use(passport.session());
+ app.use(flash());
 var configDB = require('./config/database.js')
 var url = configDB.url;
 require('./app/routes')(app, url, passport);
 require('./app/models/income')(app, url);
 require('./config/auth');
-require('./config/passport')(passport, url);
+require('./config/passport')(app,passport, url);
 require('./app/models/user')(app, url);
 
 
